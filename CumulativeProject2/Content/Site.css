@@ -75,3 +75,10 @@ a:visited{
 .inputrow{
     margin-bottom:20px;
 }
+.formwrapper {
+    max-width: 980px;
+    margin:auto;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: magenta;
+    border-radius: 20px;
+}

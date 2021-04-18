@@ -80,7 +80,12 @@ namespace CumulativeProject2.Controllers
         {
             return View();
         }
+        //GET : /Teacher/Ajax_New
+        public ActionResult Ajax_New()
+        {
+            return View();
 
+        }
 
         //GET : /Author/Create
         [HttpGet]

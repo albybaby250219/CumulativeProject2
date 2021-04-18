@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using CumulativeProject2.Models;
 //to test the code using debug.writeline()
 using System.Diagnostics;
+using System.Web.Http.Cors;
 
 namespace CumulativeProject2.Controllers
 {
@@ -193,6 +194,53 @@ namespace CumulativeProject2.Controllers
             cmd.ExecuteNonQuery();
 
             Connection.Close();
+
+        }
+
+        /// <summary>
+        /// Adds a Teacher to the MySQL Database.
+        /// </summary>
+        /// <param name="NewTeacher">An object with fields that map to the columns of the teachers table.</param>
+        /// <example>
+        /// POST api/TeacherData/AddAJAXTeacher
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"Abigail",
+        ///	"TeacherLname":"Fred",
+        ///	"TeacherEmployeeNum":"T678",
+        ///	"TeacherSalary":"45.75"
+        /// }
+        /// </example>
+        [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void AddAJAXTeacher([FromBody] Teacher NewTeacher)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            Debug.WriteLine(NewTeacher.TeacherFname);
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "Insert into Teachers(teacherfname,teacherlname,employeenumber,hiredate,salary) " +
+                "values(@fname,@lname,@employeenum,CURRENT_DATE(),@salary)";
+
+            cmd.Parameters.AddWithValue("@fname", NewTeacher.TeacherFname);
+            cmd.Parameters.AddWithValue("@lname", NewTeacher.TeacherLname);
+            cmd.Parameters.AddWithValue("@employeenum", NewTeacher.TeacherEmployeeNum);
+            cmd.Parameters.AddWithValue("@salary", NewTeacher.TeacherSalary);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
+
 
         }
     }
